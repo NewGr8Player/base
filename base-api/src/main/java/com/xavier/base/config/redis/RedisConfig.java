@@ -1,4 +1,4 @@
-package com.xavier.config.redis;
+package com.xavier.base.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -13,21 +13,21 @@ import java.time.Duration;
 @Configuration
 public class RedisConfig {
 
-	@Value("${spring.redis.expire_time}")
-	private Long EXPIRE_TIME;
+    @Value("${spring.redis.expire-time:1200}")
+    private Long EXPIRE_TIME;
 
-	@Bean
-	public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
 
 
-		RedisCacheManager cacheManager = RedisCacheManager.builder(redisConnectionFactory)
-				.cacheDefaults(
-						RedisCacheConfiguration
-								.defaultCacheConfig()
-								.entryTtl(Duration.ofSeconds(EXPIRE_TIME))
-				)
-				.build();
+        RedisCacheManager cacheManager = RedisCacheManager.builder(redisConnectionFactory)
+                .cacheDefaults(
+                        RedisCacheConfiguration
+                                .defaultCacheConfig()
+                                .entryTtl(Duration.ofSeconds(EXPIRE_TIME))
+                )
+                .build();
 
-		return cacheManager;
-	}
+        return cacheManager;
+    }
 }

@@ -1,10 +1,8 @@
-package com.xavier.dao;
+package com.xavier.base.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.xavier.bean.Permission;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xavier.base.entity.Permission;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * 权限Dao

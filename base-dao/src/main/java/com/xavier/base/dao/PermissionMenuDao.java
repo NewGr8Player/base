@@ -1,7 +1,7 @@
-package com.xavier.dao;
+package com.xavier.base.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.xavier.bean.PermissionMenu;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xavier.base.entity.PermissionMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -28,5 +28,5 @@ public interface PermissionMenuDao extends BaseMapper<PermissionMenu> {
             + " #{item}"
             + " </foreach>"
             + "</script>")
-    List<PermissionMenu> findByBatchPermissionIds(@Param("permissionIdList") List<String> permissionIdList);
+    List<PermissionMenu> listByPermissionIds(@Param("permissionIdList") List<String> permissionIdList);
 }

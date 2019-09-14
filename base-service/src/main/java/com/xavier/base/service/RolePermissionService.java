@@ -1,9 +1,9 @@
-package com.xavier.service;
+package com.xavier.base.service;
 
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.xavier.bean.RolePermission;
-import com.xavier.dao.RolePermissionDao;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xavier.base.dao.RolePermissionDao;
+import com.xavier.base.entity.RolePermission;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ import java.util.List;
  * @author NewGr8Player
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class RolePermissionService extends ServiceImpl<RolePermissionDao, RolePermission> {
 
     /**
@@ -36,7 +36,7 @@ public class RolePermissionService extends ServiceImpl<RolePermissionDao, RolePe
      * @return
      */
     @Cacheable(cacheNames = "rolePermissionList")
-    public List<RolePermission> findByBatchRoleIds(List<String> roleIdList) {
-        return baseMapper.findByBatchRoleIds(roleIdList);
+    public List<RolePermission> listByRoleIds(List<String> roleIdList) {
+        return baseMapper.findByRoleIds(roleIdList);
     }
 }

@@ -1,7 +1,7 @@
-package com.xavier.dao;
+package com.xavier.base.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.xavier.bean.UserRole;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xavier.base.entity.UserRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -15,13 +15,4 @@ import java.util.List;
  */
 @Mapper
 public interface UserRoleDao extends BaseMapper<UserRole> {
-
-	/**
-	 * 根据用户Id查找用户角色
-	 *
-	 * @param userId
-	 * @return
-	 */
-	@Select("SELECT * FROM sys_user_role WHERE user_id = #{userId}")
-	List<UserRole> findByUserId(@Param("userId") String userId);
 }

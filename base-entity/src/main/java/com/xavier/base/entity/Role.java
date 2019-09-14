@@ -1,24 +1,25 @@
-package com.xavier.bean;
+package com.xavier.base.entity;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.xavier.bean.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * 角色Bean
  *
  * @author NewGr8Player
  */
-@TableName("sys_role")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role extends BaseEntity {
+@Accessors(chain = true)
+@TableName("sys_role")
+public class Role extends BaseEntity<String> {
 
     /**
      * 角色编码

@@ -1,4 +1,4 @@
-package com.xavier.config.swagger;
+package com.xavier.base.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

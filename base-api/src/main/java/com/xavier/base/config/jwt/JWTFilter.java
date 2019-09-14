@@ -1,4 +1,4 @@
-package com.xavier.common.jwt;
+package com.xavier.base.config.jwt;
 
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * preHandle->isAccessAllowed->isLoginAttempt->executeLogin
@@ -49,9 +50,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
-        HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader(JWTVars.HEADER_NAME);
-        return token != null;
+        return ((HttpServletRequest) request).getHeader(JWTVars.HEADER_NAME) != null;
     }
 
     /**
@@ -92,9 +91,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     private void responseError(ServletResponse response, String message) {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            /* 设置编码，否则中文字符在重定向时会变为空字符串 */
-            message = URLEncoder.encode(message, "UTF-8");
-            httpServletResponse.sendRedirect("/unauthorized/" + message);
+            httpServletResponse.sendRedirect("/status/401");
         } catch (IOException e) {
             logger.error(e.getMessage());
         }

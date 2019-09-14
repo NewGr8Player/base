@@ -1,4 +1,4 @@
-package com.xavier.base.config.shiro.redis;
+package com.xavier.base.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;

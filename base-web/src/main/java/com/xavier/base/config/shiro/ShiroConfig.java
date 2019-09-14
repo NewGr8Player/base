@@ -1,6 +1,6 @@
-package com.xavier.base.config.shiro.shiro;
+package com.xavier.base.config.shiro;
 
-import com.xavier.base.config.shiro.redis.RedisSessionDao;
+import com.xavier.base.config.redis.RedisSessionDao;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;

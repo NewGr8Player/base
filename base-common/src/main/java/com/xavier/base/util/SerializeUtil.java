@@ -1,4 +1,4 @@
-package com.xavier.common.util;
+package com.xavier.base.util;
 
 import java.io.*;
 
@@ -8,6 +8,7 @@ import java.io.*;
  * @author NewGr8Player
  */
 public class SerializeUtil {
+
     public static Object deserialize(byte[] bytes) {
         Object result = null;
         if (isEmpty(bytes)) {

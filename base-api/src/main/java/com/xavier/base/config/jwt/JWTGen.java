@@ -5,11 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 /**
@@ -17,8 +16,11 @@ import java.util.Date;
  *
  * @author NewGr8Player
  */
+@Slf4j
 @Component
 public class JWTGen {
+
+    public static final String CLAIM_FIELD_NAME = "username";
 
     /**
      * <pre>
@@ -42,12 +44,13 @@ public class JWTGen {
             Algorithm algorithm = Algorithm.HMAC256(JWTVars.SECRET);
             return JWT.create()
                     /* 附带username信息 */
-                    .withClaim("username", username)/* 载荷部分包含的信息 */
+                    .withClaim(CLAIM_FIELD_NAME, username)/* 载荷部分包含的信息 */
                     /* 到期时间 */
                     .withExpiresAt(date)
                     /* 创建一个新的JWT，并使用给定的算法进行标记 */
                     .sign(algorithm);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
+            log.error("Token创建异常。", e);
             return null;
         }
     }
@@ -64,7 +67,7 @@ public class JWTGen {
             Algorithm algorithm = Algorithm.HMAC256(JWTVars.SECRET);
             /* 在token中附带了username信息 */
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withClaim("username", username)
+                    .withClaim(CLAIM_FIELD_NAME, username)
                     .build();
             /* 验证 token */
             verifier.verify(token);
@@ -82,7 +85,7 @@ public class JWTGen {
     public String getUsername(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("username").asString();
+            return jwt.getClaim(CLAIM_FIELD_NAME).asString();
         } catch (JWTDecodeException e) {
             return null;
         }

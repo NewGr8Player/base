@@ -1,4 +1,4 @@
-package com.xavier.common.util;
+package com.xavier.base.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 

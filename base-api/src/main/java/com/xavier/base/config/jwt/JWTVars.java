@@ -7,31 +7,31 @@ import org.springframework.stereotype.Component;
 public class JWTVars {
 
     /**
-     * Tocken 超时时间
+     * Token 超时时间
      */
-    public static Long EXPIRE_TIME;
+    static Long EXPIRE_TIME;
 
     /**
      * 秘钥
      */
-    public static String SECRET;
+    static String SECRET;
 
     /**
      * Http header中存储Token的字段名
      */
-    public static String HEADER_NAME;
+    static String HEADER_NAME;
 
-    @Value("${jwt.header_name}")
-    public void setHeaderName(String headerNameame) {
-        HEADER_NAME = headerNameame;
+    @Value("${jwt.header-name:Authorization}")
+    public void setHeaderName(String headerName) {
+        HEADER_NAME = headerName;
     }
 
-    @Value("${jwt.expire_time}")
+    @Value("${jwt.expire-time:1200}")
     public void setExpireTime(Long expireTime) {
         EXPIRE_TIME = expireTime;
     }
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:MySecret}")
     public void setSecret(String secret) {
         SECRET = secret;
     }

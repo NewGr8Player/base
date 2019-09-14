@@ -1,4 +1,4 @@
-package com.xavier.base.config.shiro.shiro;
+package com.xavier.base.config.shiro;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.AllArgsConstructor;

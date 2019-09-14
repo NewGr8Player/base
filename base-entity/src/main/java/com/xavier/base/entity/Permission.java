@@ -1,12 +1,12 @@
-package com.xavier.bean;
+package com.xavier.base.entity;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.xavier.bean.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 
 /**
@@ -14,12 +14,13 @@ import lombok.Setter;
  *
  * @author NewGr8Player
  */
-@TableName(value = "sys_permission")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Permission extends BaseEntity {
+@Accessors(chain = true)
+@TableName(value = "sys_permission")
+public class Permission extends BaseEntity<String> {
 
     /**
      * 权限名称

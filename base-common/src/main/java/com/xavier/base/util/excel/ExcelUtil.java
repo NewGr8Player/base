@@ -1,7 +1,10 @@
-package com.xavier.base.util.excel.util;
+package com.xavier.base.util.excel;
 
+import com.xavier.base.util.excel.annotation.ExcelEntity;
 import com.xavier.base.util.excel.annotation.ExcelField;
+import com.xavier.base.util.excel.entity.BasicExportModel;
 import com.xavier.base.util.excel.entity.ExcelFieldModel;
+import com.xavier.base.util.excel.util.NamedFormatUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -114,6 +117,7 @@ public class ExcelUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("获取文件名异常", e);
         }
         if (Objects.nonNull(workBook)) { /* 后缀名 */
             fileName += workBook instanceof XSSFWorkbook ? XLSX_SUFFIX : XLS_SUFFIX;

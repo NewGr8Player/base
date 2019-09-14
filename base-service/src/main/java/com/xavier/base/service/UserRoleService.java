@@ -1,21 +1,24 @@
-package com.xavier.service;
+package com.xavier.base.service;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.xavier.bean.UserRole;
-import com.xavier.dao.UserRoleDao;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xavier.base.dao.UserRoleDao;
+import com.xavier.base.entity.UserRole;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Wrapper;
+import java.util.Collection;
 import java.util.List;
 
 /**
- * 用户权限Servier
+ * 用户权限Service
  *
  * @author NewGr8Player
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserRoleService extends ServiceImpl<UserRoleDao, UserRole> {
 
     /**
@@ -26,7 +29,9 @@ public class UserRoleService extends ServiceImpl<UserRoleDao, UserRole> {
      */
     @Cacheable(cacheNames = "userRoleList")
     public List<UserRole> findByUserId(String userId) {
-        return baseMapper.findByUserId(userId);
+        QueryWrapper<UserRole> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",userId);
+        return baseMapper.selectList(wrapper);
     }
 
     /**
@@ -36,7 +41,7 @@ public class UserRoleService extends ServiceImpl<UserRoleDao, UserRole> {
      * @return
      */
     @Cacheable(cacheNames = "userRoleList")
-    public List<UserRole> selectBatchIds(List<String> idList) {
-        return super.selectBatchIds(idList);
+    public Collection<UserRole> selectBatchIds(List<String> idList) {
+        return super.listByIds(idList);
     }
 }

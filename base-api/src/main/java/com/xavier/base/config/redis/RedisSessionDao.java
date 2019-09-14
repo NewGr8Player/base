@@ -1,4 +1,4 @@
-package com.xavier.config.redis;
+package com.xavier.base.config.redis;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SimpleSession;

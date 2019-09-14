@@ -12,10 +12,11 @@
     <artifactId>base-dao</artifactId>
 
     <dependencies>
+        <!-- Xavier entity -->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <groupId>com.xavier</groupId>
+            <artifactId>base-entity</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>

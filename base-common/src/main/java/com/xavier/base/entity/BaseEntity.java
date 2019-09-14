@@ -1,5 +1,6 @@
 package com.xavier.base.entity;
 
+import com.baomidou.mybatisplus.annotation.*;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import lombok.Getter;
@@ -20,38 +21,31 @@ import java.util.Date;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-public abstract class BaseEntity<ID> implements Serializable {
+public class BaseEntity<ID> implements Serializable {
 
     /* 主键Id */
-    private ID id;
+    @TableId(value = "id", type = IdType.UUID)
+    protected ID id;
 
     /* 数据创建者Id */
-    private ID createBy;
+    @TableField(value = "create_by", fill = FieldFill.INSERT)
+    protected ID createBy;
 
     /* 数据创建时间 */
-    private Date createDateTime;
+    @TableField(value = "create_date_time", fill = FieldFill.INSERT)
+    protected Date createDateTime;
 
     /* 数据最后更新者Id */
-    private ID updateBy;
+    @TableField(value = "update_by", fill = FieldFill.INSERT_UPDATE)
+    protected ID updateBy;
 
     /* 数据最后更新时间 */
-    private Date updateDateTime;
+    @TableField(value = "update_date_time", fill = FieldFill.INSERT_UPDATE)
+    protected Date updateDateTime;
 
-    /**
-     * 插入前调用
-     */
-    protected void onInsert(ID currentId, Date currentDateTime) {
-        this.createBy = this.updateBy = currentId;
-        this.createDateTime = this.updateDateTime = currentDateTime;
-    }
-
-    /**
-     * 更新前调用
-     */
-    protected void onUpdate(ID currentId, Date currentDateTime) {
-        this.updateBy = currentId;
-        this.updateDateTime = currentDateTime;
-    }
+    @TableLogic(value = "0", delval = "1")
+    @TableField(value = "deleted", fill = FieldFill.INSERT)
+    protected Integer deleted;
 
     @Override
     public boolean equals(Object o) {

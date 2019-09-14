@@ -1,6 +1,6 @@
-package com.xavier.config.shiro;
+package com.xavier.base.config.shiro;
 
-import com.xavier.common.util.SerializeUtil;
+import com.xavier.base.util.SerializeUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.shiro.cache.Cache;
@@ -93,8 +93,7 @@ public class ShiroRedisCache<K, V> implements Cache<K, V> {
 
     private byte[] getBytesKey(K key) {
         if (key instanceof String) {
-            String prekey = this.prefix + key;
-            return prekey.getBytes();
+            return (this.prefix + key).getBytes();
         } else {
             return SerializeUtil.serialize(key);
         }

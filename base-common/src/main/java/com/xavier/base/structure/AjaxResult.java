@@ -1,4 +1,4 @@
-package com.xavier.common.structure;
+package com.xavier.base.structure;
 
 import lombok.*;
 

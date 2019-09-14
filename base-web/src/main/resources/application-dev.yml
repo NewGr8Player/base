@@ -2,13 +2,13 @@ server:
   port: 8081
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/base
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
+    url: jdbc:p6spy:mysql://localhost:3306/base?serverTimezone=UTC
     username: root
     password: root
   redis:
-    expire_time: 120
-    database: 6
+    expire-time: 120
+    database: 5
     host: 127.0.0.1
     password:
     port: 6379
@@ -19,8 +19,25 @@ spring:
         max-idle: 8
         max-wait: -1ms
         max-active: 8
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    request-context-attribute: request
+    suffix: .ftl
+  mvc:
+    static-path-pattern: /static/**
 springfox:
   documentation:
     swagger:
       v2:
         path: /api-docs
+site:
+  site-name: 通用站点名称
+logging:
+  level:
+    com.xavier.base: debug

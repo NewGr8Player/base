@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestControllerAdvice
-public class ExceptionController {
+public class ApiAdvice {
 
     /**
      * 捕捉shiro的异常

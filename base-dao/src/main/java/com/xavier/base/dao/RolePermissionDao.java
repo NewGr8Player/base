@@ -1,8 +1,8 @@
-package com.xavier.dao;
+package com.xavier.base.dao;
 
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.xavier.bean.RolePermission;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xavier.base.entity.RolePermission;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -20,7 +20,7 @@ public interface RolePermissionDao extends BaseMapper<RolePermission> {
     /**
      * 根据roleId查找
      *
-     * @param roleId
+     * @param roleId 角色Id
      * @return
      */
     @Select("SELECT * FROM sys_role_permission WHERE role_id=#{roleId}")
@@ -29,7 +29,7 @@ public interface RolePermissionDao extends BaseMapper<RolePermission> {
     /**
      * 根据roleIdList批量查找
      *
-     * @param roleIdList
+     * @param roleIdList 角色IdList
      * @return
      */
     @Select("<script>"
@@ -38,7 +38,7 @@ public interface RolePermissionDao extends BaseMapper<RolePermission> {
             + " #{item}"
             + " </foreach>"
             + "</script>")
-    List<RolePermission> findByBatchRoleIds(@Param("roleIdList") List<String> roleIdList);
+    List<RolePermission> findByRoleIds(@Param("roleIdList") List<String> roleIdList);
 
 
 }

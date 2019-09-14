@@ -1,8 +1,8 @@
-package com.xavier.service;
+package com.xavier.base.service;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.xavier.bean.PermissionMenu;
-import com.xavier.dao.PermissionMenuDao;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xavier.base.dao.PermissionMenuDao;
+import com.xavier.base.entity.PermissionMenu;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 权限菜单Servier
+ * 权限菜单Service
  *
  * @author NewGr8Player
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class PermissionMenuService extends ServiceImpl<PermissionMenuDao, PermissionMenu> {
 
     /**
@@ -25,7 +25,7 @@ public class PermissionMenuService extends ServiceImpl<PermissionMenuDao, Permis
      * @return
      */
     @Cacheable(cacheNames = "permissionMenuList")
-    public List<PermissionMenu> findByBatchPermissionIds(List<String> permissionIdList) {
-        return baseMapper.findByBatchPermissionIds(permissionIdList);
+    public List<PermissionMenu> listByPermissionIds(List<String> permissionIdList) {
+        return baseMapper.listByPermissionIds(permissionIdList);
     }
 }

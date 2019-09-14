@@ -1,24 +1,27 @@
-package com.xavier.service;
+package com.xavier.base.service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.xavier.bean.Role;
-import com.xavier.common.page.Page;
-import com.xavier.dao.RoleDao;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xavier.base.dao.RoleDao;
+import com.xavier.base.entity.Role;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
- * 角色Servier
+ * 角色Service
  *
  * @author NewGr8Player
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class RoleService extends ServiceImpl<RoleDao, Role> {
 
     /**
@@ -27,9 +30,10 @@ public class RoleService extends ServiceImpl<RoleDao, Role> {
      * @param idList
      * @return
      */
+    @Override
     @Cacheable(cacheNames = "roleList")
-    public List<Role> selectBatchIds(List<String> idList) {
-        return super.selectBatchIds(idList);
+    public Collection<Role> listByIds(Collection<? extends Serializable> idList) {
+        return super.listByIds(idList);
     }
 
     /**
@@ -39,14 +43,14 @@ public class RoleService extends ServiceImpl<RoleDao, Role> {
      * @param role
      * @return
      */
-    public Page<Role> selectRoleListPage(Page<Role> rolePage, Role role) {
-        EntityWrapper entityWrapper = new EntityWrapper();
+    public IPage<Role> selectRoleListPage(Page<Role> rolePage, Role role) {
+        QueryWrapper<Role> entityWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(role.getRoleCode())) {/* role_code */
             entityWrapper.like("role_code", role.getRoleCode());
         }
         if (StringUtils.isNotBlank(role.getRoleName())) {/* role_name */
             entityWrapper.like("role_name", role.getRoleName());
         }
-        return (Page<Role>) rolePage.setRecords(baseMapper.selectPage(rolePage, entityWrapper));
+        return (IPage<Role>) baseMapper.selectPage(rolePage, entityWrapper);
     }
 }

@@ -1,4 +1,4 @@
-package com.xavier.config.shiro;
+package com.xavier.base.config.shiro;
 
 import org.apache.shiro.cache.AbstractCacheManager;
 import org.apache.shiro.cache.Cache;

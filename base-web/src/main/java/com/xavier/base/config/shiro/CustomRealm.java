@@ -1,4 +1,4 @@
-package com.xavier.base.config.shiro.shiro;
+package com.xavier.base.config.shiro;
 
 import com.xavier.base.entity.Permission;
 import com.xavier.base.entity.Role;

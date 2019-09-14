@@ -1,24 +1,26 @@
-package com.xavier.service;
+package com.xavier.base.service;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.xavier.bean.Menu;
-import com.xavier.common.structure.TreeNode;
-import com.xavier.dao.MenuDao;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xavier.base.dao.MenuDao;
+import com.xavier.base.entity.Menu;
+import com.xavier.base.entity.User;
+import com.xavier.base.structure.TreeNode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * 菜单Servier
+ * 菜单Service
  *
  * @author NewGr8Player
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class MenuService extends ServiceImpl<MenuDao, Menu> {
 
     /**
@@ -28,8 +30,8 @@ public class MenuService extends ServiceImpl<MenuDao, Menu> {
      * @return
      */
     @Cacheable(cacheNames = "channelMenuList")
-    public List<Menu> selectBatchIds(List<String> idList) {
-        return super.selectBatchIds(idList);
+    public Collection<Menu> selectBatchIds(List<String> idList) {
+        return super.listByIds(idList);
     }
 
     /**
@@ -41,40 +43,38 @@ public class MenuService extends ServiceImpl<MenuDao, Menu> {
      */
     @Cacheable(cacheNames = "modelMenuList")
     public List<TreeNode> selectMenuTree(Menu menu, List<String> ids) {
-        EntityWrapper entityWrapper = new EntityWrapper();
+        QueryWrapper<Menu> entityWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(menu.getMenuType())) { /* menu_type */
             entityWrapper.eq("menu_type", menu.getMenuType());
         }
-        if (StringUtils.isNotBlank(menu.getVisiable())) { /* visiable */
-            entityWrapper.eq("visiable", menu.getVisiable());
+        if (StringUtils.isNotBlank(menu.getVisitable())) { /* visitable */
+            entityWrapper.eq("visitable", menu.getVisitable());
         }
         if (StringUtils.isNotBlank(menu.getMenuName())) { /* menu_name */
             entityWrapper.like("menu_name", "%" + menu.getMenuCode() + "%");
         }
         entityWrapper.in("id", ids);
-        entityWrapper.orderBy("parent_id,menu_order");
+        entityWrapper.orderBy(true, true, "parent_id", "menu_order");
         List<Menu> menuList = baseMapper.selectList(entityWrapper);
-        Map<String, List<Menu>> childMap = new HashMap<>();
-        List<TreeNode> treeNodeList = new ArrayList<>();
-        for (Menu it : menuList) {
-            if ("0".equals(it.getParentId())) {
-                treeNodeList.add(new TreeNode(it));
-            } else {
-                if (childMap.containsKey(it.getParentId())) {
-                    List<Menu> childList = childMap.get(it.getParentId());
-                    childList.add(it);
-                    childMap.put(it.getParentId(), childList);
-                } else {
-                    childMap.put(it.getParentId(), Arrays.asList(it));
+
+
+        /* 根据ParentId分组 */
+        Map<String, List<Menu>> groupedMap = menuList.stream().collect(Collectors.groupingBy(Menu::getParentId));
+
+        List<TreeNode> treeNodeList = Optional.ofNullable(groupedMap.get("0"))
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(TreeNode::new)
+                .collect(Collectors.toList());
+
+        treeNodeList.forEach(
+                treeNode -> {
+                    String parentId = (String) treeNode.getCurrent().getId();
+                    if (groupedMap.containsKey(parentId)) {
+                        treeNode.setChild(groupedMap.get(parentId));
+                    }
                 }
-            }
-        }
-        for (TreeNode<Menu> treeNode : treeNodeList) {
-            String parentId = treeNode.getCurrent().getId();
-            if (childMap.containsKey(parentId)) {
-                treeNode.setChild(childMap.get(parentId));
-            }
-        }
+        );
         return treeNodeList;
     }
 }
