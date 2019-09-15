@@ -11,7 +11,9 @@
 <link rel="stylesheet" href="${request.contextPath}/static/css/xadmin.css">
 <script type="text/javascript" src="${request.contextPath}/static/js/jquery.min.js"></script>
 <script src="${request.contextPath}/static/lib/layui/layui.js" charset="utf-8"></script>
-
+<script type="text/javascript">
+    var basePath = '${request.contextPath}';
+</script>
 <!--[if lt IE 9]>
 <script src="${request.contextPath}/static/js/ie9/html5.min.js"></script>
 <script src="${request.contextPath}/static/js/ie9/respond.min.js"></script>

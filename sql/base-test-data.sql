@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 13/09/2019 21:42:47
+ Date: 15/09/2019 13:26:56
 */
 
 SET NAMES utf8mb4;
@@ -43,11 +43,13 @@ CREATE TABLE `sys_menu`  (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '0', 'channel', 'root', '首页', '&#xe723;', '/sys/index', '00', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-13 21:31:25');
-INSERT INTO `sys_menu` VALUES ('2', '0', 'model', 'sys', '系统设置', '&#xe6b8;', '', '99', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-13 21:22:37');
-INSERT INTO `sys_menu` VALUES ('3', '2', 'model', 'role', '角色管理', '&#xe6a7;', '/sys/role', '20', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-13 21:22:27');
-INSERT INTO `sys_menu` VALUES ('31', '2', 'model', 'role.form', '角色表单', '&#xe6a7;', '/sys/role/form', '201', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-13 21:22:30');
-INSERT INTO `sys_menu` VALUES ('4', '2', 'model', 'menu', '菜单管理', '&#xe6a7;', '/sys/menu', '30', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-13 21:22:34');
+INSERT INTO `sys_menu` VALUES ('1', '0', 'channel', 'root', '首页', 'layui-icon-home', '/index', '00', 'hidden', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:42:11');
+INSERT INTO `sys_menu` VALUES ('2', '0', 'model', 'sys', '系统设置', 'layui-icon-engine', '', '99', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:42:08');
+INSERT INTO `sys_menu` VALUES ('3', '2', 'model', 'role', '角色管理', 'layui-icon-right', '/sys/role', '20', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:41:40');
+INSERT INTO `sys_menu` VALUES ('4', '2', 'model', 'role.form', '角色表单', 'layui-icon-right', '/sys/role/form', '201', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:41:40');
+INSERT INTO `sys_menu` VALUES ('5', '2', 'model', 'menu', '菜单管理', 'layui-icon-right', '/sys/menu', '30', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:41:40');
+INSERT INTO `sys_menu` VALUES ('6', '0', 'model', 'user', '用户管理', 'layui-icon-user', '', '40', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:41:12');
+INSERT INTO `sys_menu` VALUES ('7', '6', 'model', 'user', '用户列表', 'layui-icon-right', '/user/list', '41', 'show', NULL, NULL, NULL, NULL, 0, '2019-09-14 10:41:14');
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -72,7 +74,9 @@ CREATE TABLE `sys_permission`  (
 INSERT INTO `sys_permission` VALUES ('1', '首页', 'sys:root:index', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:51:23');
 INSERT INTO `sys_permission` VALUES ('2', '系统管理', 'sys:set:view', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:51:23');
 INSERT INTO `sys_permission` VALUES ('3', '权限管理', 'sys:role:view', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:51:23');
-INSERT INTO `sys_permission` VALUES ('31', '权限表单', 'sys:role:form', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:51:23');
+INSERT INTO `sys_permission` VALUES ('4', '权限表单', 'sys:role:form', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:47:17');
+INSERT INTO `sys_permission` VALUES ('5', '用户列表', 'sys:user:view', NULL, NULL, NULL, NULL, 0, '2019-09-14 09:12:10');
+INSERT INTO `sys_permission` VALUES ('6', '用户修改', 'sys:user:edit', NULL, NULL, NULL, NULL, 0, '2019-09-14 12:43:52');
 
 -- ----------------------------
 -- Table structure for sys_permission_menu
@@ -95,10 +99,13 @@ CREATE TABLE `sys_permission_menu`  (
 -- Records of sys_permission_menu
 -- ----------------------------
 INSERT INTO `sys_permission_menu` VALUES ('1', '1', '1', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:48:44');
-INSERT INTO `sys_permission_menu` VALUES ('2', '1', '2', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:57:20');
-INSERT INTO `sys_permission_menu` VALUES ('3', '1', '3', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:57:21');
-INSERT INTO `sys_permission_menu` VALUES ('4', '1', '31', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:57:24');
-INSERT INTO `sys_permission_menu` VALUES ('5', '1', '4', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:57:24');
+INSERT INTO `sys_permission_menu` VALUES ('2', '2', '2', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:47:55');
+INSERT INTO `sys_permission_menu` VALUES ('3', '3', '3', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:47:56');
+INSERT INTO `sys_permission_menu` VALUES ('4', '4', '4', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:47:57');
+INSERT INTO `sys_permission_menu` VALUES ('5', '5', '5', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:47:59');
+INSERT INTO `sys_permission_menu` VALUES ('6', '5', '6', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:49:25');
+INSERT INTO `sys_permission_menu` VALUES ('7', '5', '7', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:49:32');
+INSERT INTO `sys_permission_menu` VALUES ('8', '6', '6', NULL, NULL, NULL, NULL, 0, '2019-09-14 11:41:55');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -175,7 +182,9 @@ CREATE TABLE `sys_role_permission`  (
 INSERT INTO `sys_role_permission` VALUES ('1', '1', '1', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:48:19');
 INSERT INTO `sys_role_permission` VALUES ('2', '1', '2', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:48:23');
 INSERT INTO `sys_role_permission` VALUES ('3', '1', '3', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:48:27');
-INSERT INTO `sys_role_permission` VALUES ('4', '1', '31', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:48:25');
+INSERT INTO `sys_role_permission` VALUES ('4', '1', '4', NULL, NULL, NULL, NULL, 0, '2019-09-14 08:47:26');
+INSERT INTO `sys_role_permission` VALUES ('5', '1', '5', NULL, NULL, NULL, NULL, NULL, '2019-09-14 08:47:28');
+INSERT INTO `sys_role_permission` VALUES ('6', '1', '6', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -199,6 +208,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1', 'admin', '$2a$10$ztkGyZhJ36NkGHKey9Q3..dBK/JF3UxhpFZn85/4.f6yMGBGF.2FC', '呦呵丶晓晓', NULL, NULL, NULL, NULL, 0, '2019-09-13 20:48:15');
+INSERT INTO `sys_user` VALUES ('4d41d4d480d0a57bcd6182fc38f8516a', '张研博', '$2a$10$mpxHBBiRO86I0DEUYW1I5u9rJkLeLL4Yply1wq9cWMDyNuqjigSjm', 'zhangyb', '1', '2019-09-14 04:44:53', '1', '2019-09-14 04:44:53', 0, '2019-09-14 13:04:50');
 
 -- ----------------------------
 -- Table structure for sys_user_role

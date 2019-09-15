@@ -6,6 +6,7 @@ import com.xavier.base.entity.ResponseEntity;
 import com.xavier.base.entity.User;
 import com.xavier.base.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.groovy.util.Maps;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,12 @@ public class UserController extends BaseController {
         return modelAndView(USER_ADD_MAPPING);
     }
 
+    @RequiresPermissions("sys:user:edit")
+    @GetMapping(path = "/edit")
+    public ModelAndView userEdit(User user) {
+        return modelAndView(USER_EDIT_MAPPING, Maps.of("user", userService.getById(user.getId())));
+    }
+
     @ResponseBody
     @RequiresPermissions("sys:user:view")
     @RequestMapping(path = "/queryList", method = {RequestMethod.GET, RequestMethod.POST})
@@ -47,7 +54,7 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequiresPermissions("sys:user:edit")
     @RequestMapping(path = "/save", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity queryList(@RequestBody User user) {
+    public ResponseEntity save(@RequestBody User user) {
         String msg = "", data = "";
         try {
             userService.save(user);
@@ -58,4 +65,17 @@ public class UserController extends BaseController {
         return new ResponseEntity<>(200, msg, data);
     }
 
+    @ResponseBody
+    @RequiresPermissions("sys:user:edit")
+    @RequestMapping(path = "/update", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity update(@RequestBody User user) {
+        String msg = "", data = "";
+        try {
+            userService.updateById(user);
+        } catch (Exception e) {
+            msg = "保存失败";
+            data = e.getMessage();
+        }
+        return new ResponseEntity<>(200, msg, data);
+    }
 }
