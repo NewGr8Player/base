@@ -19,7 +19,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Accessors(chain = true)
 @NoArgsConstructor
 public class BaseEntity<ID> implements Serializable {
 
@@ -77,5 +76,17 @@ public class BaseEntity<ID> implements Serializable {
                 .add("updateBy", updateBy)
                 .add("updateDateTime", updateDateTime)
                 .toString();
+    }
+
+    public interface Create {
+
+    }
+
+    public interface Update {
+
+    }
+
+    public interface Status {
+
     }
 }

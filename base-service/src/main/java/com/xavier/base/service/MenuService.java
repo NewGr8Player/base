@@ -1,13 +1,17 @@
 package com.xavier.base.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xavier.base.dao.MenuDao;
+import com.xavier.base.dao.MenuMapper;
 import com.xavier.base.entity.Menu;
-import com.xavier.base.entity.User;
-import com.xavier.base.structure.TreeNode;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.Cacheable;
+import com.xavier.base.entity.MenuResource;
+import com.xavier.base.entity.MenuTree;
+import com.xavier.base.enums.ErrorCodeEnum;
+import com.xavier.base.enums.MenuTypeEnum;
+import com.xavier.base.enums.StatusEnum;
+import com.xavier.base.util.ApiAssert;
+import com.xavier.base.util.TreeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,66 +19,107 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 菜单Service
+ * MenuService
  *
  * @author NewGr8Player
  */
 @Service
-@Transactional
-public class MenuService extends ServiceImpl<MenuDao, Menu> {
+public class MenuService extends ServiceImpl<MenuMapper, Menu> {
 
-    /**
-     * 根据idList批量查询
-     *
-     * @param idList 主键ID列表
-     * @return
-     */
-    @Cacheable(cacheNames = "channelMenuList")
-    public Collection<Menu> selectBatchIds(List<String> idList) {
-        return super.listByIds(idList);
+    @Autowired
+    private MenuResourceService menuResourceService;
+
+    @Transactional
+    public void saveMenu(Menu menu, List<String> resourceIds) {
+        save(menu);
+        if (CollectionUtils.isNotEmpty(resourceIds)) {
+            String menuId = menu.getId();
+            /* 添加resource关联 */
+            menuResourceService.saveBatch(menuResourceService.getMenuResources(menuId, resourceIds)
+            );
+        }
+    }
+
+
+    @Transactional
+    public void updateMenu(Menu menu, List<String> resourceIds) {
+        updateById(menu);
+        if (CollectionUtils.isNotEmpty(resourceIds)) {
+            String menuId = menu.getId();
+            /* 删除resource关联 */
+            menuResourceService.removeByMenuId(menuId);
+            /* 添加resource关联 */
+            menuResourceService.saveBatch(menuResourceService.getMenuResources(menuId, resourceIds)
+            );
+        }
+    }
+
+
+    @Transactional
+    public void removeMenu(String menuId) {
+        if (parentIdNotNull(menuId)) {
+            lambdaQuery().eq(Menu::getParentId, menuId)
+                    .list()
+                    .stream()
+                    .filter(e -> parentIdNotNull(e.getParentId()))
+                    .forEach(e -> removeMenu(e.getId()));
+            /* 删除resource关联 */
+            menuResourceService.removeByMenuId(menuId);
+            /* 删除菜单 */
+            removeById(menuId);
+        }
+
+    }
+
+
+    @Transactional
+    public void updateStatus(Integer menuId, StatusEnum status) {
+        Menu menu = getById(menuId);
+        ApiAssert.notNull(ErrorCodeEnum.MENU_NOT_FOUND, menu);
+        menu.setStatus(status);
+        updateById(menu);
     }
 
     /**
-     * 根据 entity 条件，查询全部记录
+     * 父ID不为0并且不为空
      *
-     * @param menu 实体对象
-     * @param ids  id数组
-     * @return List&lt;Menu&gt;
+     * @param parentId
+     * @return
      */
-    @Cacheable(cacheNames = "modelMenuList")
-    public List<TreeNode> selectMenuTree(Menu menu, List<String> ids) {
-        QueryWrapper<Menu> entityWrapper = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(menu.getMenuType())) { /* menu_type */
-            entityWrapper.eq("menu_type", menu.getMenuType());
-        }
-        if (StringUtils.isNotBlank(menu.getVisitable())) { /* visitable */
-            entityWrapper.eq("visitable", menu.getVisitable());
-        }
-        if (StringUtils.isNotBlank(menu.getMenuName())) { /* menu_name */
-            entityWrapper.like("menu_name", "%" + menu.getMenuCode() + "%");
-        }
-        entityWrapper.in("id", ids);
-        entityWrapper.orderBy(true, true, "parent_id", "menu_order");
-        List<Menu> menuList = baseMapper.selectList(entityWrapper);
+    private boolean parentIdNotNull(String parentId) {
+        return Objects.nonNull(parentId) && !Objects.equals(parentId, "0");
+    }
 
 
-        /* 根据ParentId分组 */
-        Map<String, List<Menu>> groupedMap = menuList.stream().collect(Collectors.groupingBy(Menu::getParentId));
+    public Menu getMenuDetails(Integer menuId) {
+        Menu menu = getById(menuId);
+        ApiAssert.notNull(ErrorCodeEnum.MENU_NOT_FOUND, menu);
+        List<String> resourceIds =
+                menuResourceService.lambdaQuery()
+                        .select(MenuResource::getResourceId)
+                        .eq(MenuResource::getMenuId, menuId)
+                        .list()
+                        .stream().map(MenuResource::getResourceId)
+                        .collect(Collectors.toList());
+        menu.setResourceIds(resourceIds);
+        return menu;
+    }
 
-        List<TreeNode> treeNodeList = Optional.ofNullable(groupedMap.get("0"))
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(TreeNode::new)
+
+    public List<MenuTree> getUserPermMenus(String uid) {
+        List<MenuTree> menus = baseMapper.getUserPermMenus(uid, StatusEnum.NORMAL, Arrays.asList(MenuTypeEnum.CATALOG, MenuTypeEnum.MENU));
+        return menus.stream()
+                .filter(e -> !parentIdNotNull(e.getParentId()))
+                .map(e -> TreeUtils.findChildren(e, menus)
+                )
                 .collect(Collectors.toList());
+    }
 
-        treeNodeList.forEach(
-                treeNode -> {
-                    String parentId = (String) treeNode.getCurrent().getId();
-                    if (groupedMap.containsKey(parentId)) {
-                        treeNode.setChild(groupedMap.get(parentId));
-                    }
-                }
-        );
-        return treeNodeList;
+
+    public Set<String> getUserPermButtonAliases(String uid) {
+        return baseMapper.getUserPermMenus(uid, StatusEnum.NORMAL, Collections.singletonList(MenuTypeEnum.BUTTON))
+                .stream()
+                .map(MenuTree::getAlias)
+                .collect(Collectors.toSet());
     }
 }

@@ -14,7 +14,17 @@
     <dependencies>
         <dependency>
             <groupId>com.xavier</groupId>
+            <artifactId>base-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xavier</groupId>
             <artifactId>base-dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xavier</groupId>
+            <artifactId>base-entity</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

@@ -5,7 +5,8 @@ package com.xavier.base.exception;
  *
  * @author NewGr8Player
  */
-public class UnauthorizedException extends RuntimeException {
+public class UnauthorizedException extends BaseException {
+
     public UnauthorizedException(String msg) {
         super(msg);
     }

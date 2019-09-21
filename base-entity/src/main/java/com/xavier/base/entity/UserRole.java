@@ -2,14 +2,10 @@ package com.xavier.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.*;
 
 /**
- * 用户角色对应关系Bean
+ * 系统用户角色关系表
  *
  * @author NewGr8Player
  */
@@ -17,19 +13,20 @@ import lombok.experimental.Accessors;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = true)
 @TableName("sys_user_role")
 public class UserRole extends BaseEntity<String> {
 
     /**
-     * 用户Id
+     * 用户ID
      */
-    @TableField("user_id")
-    private String userId;
+    @TableField(value = "uid")
+    private String uid;
 
     /**
-     * 角色Id
+     * 角色ID
      */
-    @TableField("role_id")
+    @TableField(value = "role_id")
     private String roleId;
+
 }

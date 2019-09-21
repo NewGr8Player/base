@@ -120,7 +120,7 @@
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    console.log(data);
+                    console.apiLog(data);
                     //发异步，把数据提交给php
                     layer.alert("增加成功", {
                         icon: 6

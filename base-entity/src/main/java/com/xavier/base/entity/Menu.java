@@ -2,67 +2,67 @@ package com.xavier.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xavier.base.enums.MenuTypeEnum;
+import com.xavier.base.enums.StatusEnum;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import lombok.experimental.Accessors;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * 系统菜单
+ * 菜单表
  *
  * @author NewGr8Player
  */
 @Getter
 @Setter
+@ApiModel
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
-@TableName(value = "sys_menu")
+@EqualsAndHashCode(callSuper = true)
+@TableName("sys_menu")
 public class Menu extends BaseEntity<String> {
 
-    /**
-     * 父级Id
-     */
-    @TableField("parent_id")
+    @TableField(value = "parent_id")
+    @ApiModelProperty(notes = "父菜单ID，一级菜单为0")
+    @NotNull(groups = Menu.Create.class, message = "父菜单不能为空")
     private String parentId;
 
-    /**
-     * 菜单类型
-     */
-    @TableField("menu_type")
-    private String menuType;
-
-    /**
-     * 菜单编码
-     */
-    @TableField("menu_code")
-    private String menuCode;
-
-    /**
-     * 菜单名称
-     */
-    @TableField("menu_name")
+    @TableField(value = "menu_name")
+    @ApiModelProperty(notes = "菜单名称")
+    @NotBlank(groups = Menu.Create.class, message = "菜单名称不能为空")
     private String menuName;
 
-    /**
-     * 菜单路径
-     */
-    @TableField("menu_url")
-    private String menuUrl;
+    @TableField(value = "path")
+    @ApiModelProperty(notes = "路径")
+    private String path;
 
-    /**
-     * 菜单图标
-     */
-    @TableField("menu_icon")
-    private String menuIcon;
+    @TableField(value = "router")
+    @ApiModelProperty(notes = "路由")
+    private String router;
 
-    /**
-     * 菜单排序
-     */
-    @TableField("menu_order")
-    private String menuOrder;
+    @TableField(value = "menu_type")
+    @ApiModelProperty(notes = "类型:1:目录,2:菜单,3:按钮")
+    @NotNull(groups = Menu.Create.class, message = "类型不能为空")
+    private MenuTypeEnum menuType;
 
-    /**
-     * 是否可见
-     */
-    @TableField("visitable")
-    private String visitable;
+    @TableField(value = "icon")
+    @ApiModelProperty(notes = "菜单图标")
+    private String icon;
+
+    @TableField(value = "alias")
+    @ApiModelProperty(notes = "别名")
+    private String alias;
+
+    @TableField(value = "status")
+    @ApiModelProperty(notes = "状态:0：禁用 1：正常")
+    @NotNull(groups = {Menu.Create.class, Menu.Status.class}, message = "状态不能为空")
+    private StatusEnum status;
+
+    @TableField(value = "resource_ids", exist = false)
+    @ApiModelProperty(notes = "关联资源ID")
+    private List<String> resourceIds;
 }
