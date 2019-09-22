@@ -29,10 +29,10 @@
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
         <!-- Freemarker -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- Swagger-UI -->
         <dependency>
             <groupId>io.springfox</groupId>

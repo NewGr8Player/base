@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /
 spring:
@@ -12,7 +12,7 @@ spring:
     username: root
     password: root
   redis:
-    expire-time: 120
+    expire-time: 6000000
     database: 6
     host: 127.0.0.1
     password:

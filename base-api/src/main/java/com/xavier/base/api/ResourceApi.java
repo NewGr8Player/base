@@ -66,7 +66,7 @@ public class ResourceApi extends BaseController {
         return success(resourceService.list());
     }
 
-    @BaseAuth(auth = AuthTypeEnum.AUTH)
+    //@BaseAuth(auth = AuthTypeEnum.AUTH)// TODO 这里不对哦
     @ApiOperation(value = "刷新资源")
     @PutMapping
     public ApiResponses<Void> refresh() {

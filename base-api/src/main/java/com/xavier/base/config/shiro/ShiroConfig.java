@@ -81,7 +81,7 @@ public class ShiroConfig {
         shiroFilter.setFilters(filters);
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/**/**.*", "anon");
-        filterMap.put("/v2/api-docs", "anon");
+        filterMap.put("/api-docs/**", "anon");
         filterMap.put("/swagger-resources/**", "anon");
         filterMap.put("/", "anon");
         filterMap.put("/**", "jwt");
