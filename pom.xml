@@ -61,7 +61,7 @@
         <!-- SpringBoot version -->
         <spring-boot.version>${project.parent.version}</spring-boot.version>
         <!-- Guava version -->
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <!-- MyBatis-plus version -->
         <mybatis-plus.version>3.2.0</mybatis-plus.version>
         <!-- POI version-->
